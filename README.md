@@ -1,7 +1,7 @@
 # enigma-ia
 
 Une librairie réutilisable d'IA, conçue pour tourner sur Raspberry PI.<br>
-```// TODO: Transformer le code pour qu'il puisse fonctionner en standalone sur un thread tel que décris ci-dessous```
+``// TODO: Transformer le code pour qu'il puisse fonctionner en standalone sur un thread tel que décris ci-dessous``
 
 ## **Contenu de la lib** :
 ### **protocol.hpp**
@@ -28,6 +28,8 @@ Un gestionnaire de protocole. À partir du moment ou il est lancé, il démarre 
 - **addProtocol(Protocol \*protocol)** : Rajoute un protocole dans les liste des protocoles à gérer<br>
 - **setFlag(String flagName, unsigned char value)** : Crée, le cas échéant, un flag et lui assigne une valeur. Le nombre max de protocole est stocké dans la macro MAX_FLAG_NUMBER<br>
 - **short int getFlag(String flagName)** : Donne en sortie la valeur du flag spécifié sous la forme d'un unsigned char, ou -1 si le flag n'existe pas.<br>
-- **void start()** : Lance l'ia. Elle commence à lancer les protocoles les uns après les autres. __**/!\\ Cette fonction n'est pas bloquante /!\\**__<br>
-- **void pause()** : Met en pause l'IA. Elle reprendra là ou elle s'est arrétée.<br>
+- **void start()** : Lance l'ia dans son thread propre. Elle commence à lancer les protocoles les uns après les autres. Il est à noter que cette fonction n'est pas bloquante. <br>
+- **void pause()** : Met en pause l'IA. Elle pourra reprendra plus tard là ou elle s'est arrétée.<br>
 - **void reset()** : Reset les flags, et arrête l'ia. Elle recommencera au début si elle est relancée.<br>
+- **boolean isRunning()** : A pour valeur ``true`` si le thread de l'IA est en train de tourner. Sinon, a pour valeur ``false``.
+- **boolean hasRan()** : A pour valeur ``true`` si l'IA est à son état initial. Sinon, a pour valeur ``false``.
