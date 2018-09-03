@@ -1,6 +1,6 @@
 # enigma-ia
 
-Une librairie réutilisable d'IA, conçue pour tourner sur Raspberry PI.
+Une librairie réutilisable d'IA, conçue pour tourner sur Raspberry PI.<br>
 ```// TODO: Transformer le code pour qu'il puisse fonctionner en standalone sur un thread tel que décris ci-dessous```
 
 ## **Contenu de la lib** :
@@ -17,7 +17,7 @@ PRIORITY_MEDIUM,
 PRIORITY_LOW,
 PRIORITY_VERY_LOW et
 PRIORITY_NULL.<br>
-- **void reset()** : Dois remettre à l'état initial le protocole. Nécessaire pour le mécanisme de reset de l'IA. 
+- **void reset()** : Dois remettre à l'état initial le protocole. Nécessaire pour le mécanisme de reset de l'IA.
 ### **ia.hpp**
 #### Présentation:
 Un gestionnaire de protocole. À partir du moment ou il est lancé, il démarre et exécute les protocoles qu'il est le plus intéressant de lancer, en suivant le système de priorité. Il propose aussi un système de 'flag' pour gagner du temps dans la création des protocoles: il s'agit de petites variables accessibles de manière globale entre les protocoles. On peux par exemple imaginer un 'flag' *isCubeLoaded* pour savoir si un cube a déja été chargé.
