@@ -28,6 +28,6 @@ Un gestionnaire de protocole. À partir du moment ou il est lancé, il démarre 
 - **addProtocol(Protocol \*protocol)** : Rajoute un protocole dans les liste des protocoles à gérer<br>
 - **setFlag(String flagName, unsigned char value)** : Crée, le cas échéant, un flag et lui assigne une valeur. Le nombre max de protocole est stocké dans la macro MAX_FLAG_NUMBER<br>
 - **short int getFlag(String flagName)** : Donne en sortie la valeur du flag spécifié sous la forme d'un unsigned char, ou -1 si le flag n'existe pas.<br>
-- **void start()** : Lance l'ia. Elle commence à lancer les protocoles les uns après les autres. <br>
+- **void start()** : Lance l'ia. Elle commence à lancer les protocoles les uns après les autres. __**/!\\ Cette fonction n'est pas bloquante /!\\**__<br>
 - **void pause()** : Met en pause l'IA. Elle reprendra là ou elle s'est arrétée.<br>
 - **void reset()** : Reset les flags, et arrête l'ia. Elle recommencera au début si elle est relancée.<br>
