@@ -1,7 +1,6 @@
 # enigma-ia
 
-Une librairie réutilisable d'IA, conçue pour tourner sur Raspberry PI.<br>
-``// TODO: Transformer le code pour qu'il puisse fonctionner en standalone sur un thread tel que décris ci-dessous``
+Une librairie réutilisable d'IA, conçue pour tourner sur Raspberry PI.
 
 ## **Contenu de la lib** :
 ### **protocol.hpp**
@@ -36,5 +35,5 @@ Un gestionnaire de protocole, le cœur de notre système d'IA. À partir du mome
 ## À faire:
 - [ ] Refactor l'ancien code
 - [ ] Modifier le code pour qu'il puisse tourner en standalone sur son propre thread.
-- [ ] Créer un utilitaire pour gérer les flux Serial. Cet utilitaire doit pouvoir être paramétré de manière à ce qu'il puisse exécuter automatiquement une fonction donnée si une certaine commande est reçu, puis de renvoyer une réponse via ce même port Serial. À l'inverse il doit aussi permettre l'envoi de commandes.
-- [ ] Intégrer l'utilitaire Serial dans l'IA. On doit pouvoir donner un nom à chaque sortie Serial.
+- [ ] Créer un utilitaire pour gérer les flux Serial. Il doit pouvoir être utilisé de la même manière coté logique est coté actionneurs. Au programme, envoi de commande, attente de commandes, pouvoir paramétrer une réponse automatique à la réception de certaines commandes.
+- [ ] Intégrer l'utilitaire Serial dans l'IA.
