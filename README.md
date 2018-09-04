@@ -8,9 +8,9 @@ Une librairie réutilisable d'IA, conçue pour tourner sur Raspberry PI.
 C'est une classe 'abstraite' qui est sensée servir de template aux protocoles de votre robot. Ce protocole sera communiqué à l'IA qui se chargera de l'executer
 #### Fonctions membres abstraites:
 - **void nextMove(IA \*ia)** : Est exécutée tant que le protocole est en cours d'execution, et que les actionneurs ont terminés leurs actions.<br>
-- **bool isCompleted()** : Doit indiquer quand le protocole est terminé<br>
 - **void reset()** : Dois remettre à l'état initial le protocole. Nécessaire pour le mécanisme de reset de l'IA.<br>
-- **unsigned short int getPriority(IA \*ia)** : Doit indiquer le niveau de priorité du protocole. Cette priorité doit varier au fur et à mesure des actions de l'IA (par exemple priorité nulle d'un protocole *ChargerPince* quand il y a déja un cube de chargé). On précise que ia.hpp implémente quelques macro pour les priorités: PRIORITY_HIGHEST,
+- **bool isCompleted()** : Doit indiquer quand le protocole est terminé<br>
+- **unsigned short int getPriority(IA \*ia)** : Doit indiquer le niveau de priorité du protocole. Cette priorité doit varier au fur et à mesure des actions de l'IA (par exemple priorité nulle d'un protocole *ChargerPince* quand il y a déja un cube de chargé). On précise que quelques macros pour les priorités sont disponibles: PRIORITY_HIGHEST,
 PRIORITY_VERY_HIGH,
 PRIORITY_HIGH,
 PRIORITY_MEDIUM,
@@ -30,10 +30,10 @@ Un gestionnaire de protocole, le cœur de notre système d'IA. À partir du mome
 - **void start()** : Lance l'ia dans son thread propre. Elle commence à lancer les protocoles les uns après les autres. Il est à noter que cette fonction n'est pas bloquante. <br>
 - **void pause()** : Met en pause l'IA. Elle pourra reprendra plus tard là ou elle s'est arrétée.<br>
 - **void reset()** : Reset les flags, et arrête l'ia. Elle recommencera au début si elle est relancée.<br>
-- **boolean isRunning()** : A pour valeur ``true`` si le thread de l'IA est en train de tourner. Sinon, a pour valeur ``false``.
-- **boolean hasRan()** : A pour valeur ``true`` si l'IA est à son état initial. Sinon, a pour valeur ``false``.
+- **bool isRunning()** : A pour valeur ``true`` si le thread de l'IA est en train de tourner. Sinon, a pour valeur ``false``.
+- **bool hasRan()** : A pour valeur ``false`` si l'IA est à son état initial. Sinon, a pour valeur ``true``.
 ## À faire:
-- [ ] Refactor l'ancien code
+- [X] Refactor l'ancien code
 - [ ] Modifier le code pour qu'il puisse tourner en standalone sur son propre thread.
 - [ ] Créer un utilitaire pour gérer les flux Serial. Il doit pouvoir être utilisé de la même manière coté logique est coté actionneurs. Au programme, envoi de commande, attente de commandes, pouvoir paramétrer une réponse automatique à la réception de certaines commandes.
 - [ ] Intégrer l'utilitaire Serial dans l'IA.
