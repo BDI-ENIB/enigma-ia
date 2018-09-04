@@ -8,19 +8,19 @@ Une librairie réutilisable d'IA, conçue pour tourner sur Raspberry PI.<br>
 #### Présentation:
 C'est une classe 'abstraite' qui est sensée servir de template aux protocoles de votre robot. Ce protocole sera communiqué à l'IA qui se chargera de l'executer
 #### Fonctions membres abstraites:
-- **void update(IA \*ia)** : Est exécutée tant que le protocole est en cours d'execution, et que les actionneurs ont terminés leurs actions.<br>
+- **void nextMove(IA \*ia)** : Est exécutée tant que le protocole est en cours d'execution, et que les actionneurs ont terminés leurs actions.<br>
 - **bool isCompleted()** : Doit indiquer quand le protocole est terminé<br>
+- **void reset()** : Dois remettre à l'état initial le protocole. Nécessaire pour le mécanisme de reset de l'IA.<br>
 - **unsigned short int getPriority(IA \*ia)** : Doit indiquer le niveau de priorité du protocole. Cette priorité doit varier au fur et à mesure des actions de l'IA (par exemple priorité nulle d'un protocole *ChargerPince* quand il y a déja un cube de chargé). On précise que ia.hpp implémente quelques macro pour les priorités: PRIORITY_HIGHEST,
 PRIORITY_VERY_HIGH,
 PRIORITY_HIGH,
 PRIORITY_MEDIUM,
 PRIORITY_LOW,
 PRIORITY_VERY_LOW et
-PRIORITY_NULL.<br>
-- **void reset()** : Dois remettre à l'état initial le protocole. Nécessaire pour le mécanisme de reset de l'IA.
+PRIORITY_NULL.
 ### **ia.hpp**
 #### Présentation:
-Un gestionnaire de protocole. À partir du moment ou il est lancé, il démarre et exécute les protocoles qu'il est le plus intéressant de lancer, en suivant le système de priorité. Il propose aussi un système de 'flag' pour gagner du temps dans la création des protocoles: il s'agit de petites variables accessibles de manière globale entre les protocoles. On peux par exemple imaginer un 'flag' *isCubeLoaded* pour savoir si un cube a déja été chargé.
+Un gestionnaire de protocole, le cœur de notre système d'IA. À partir du moment ou il est lancé, il exécute étape par étape les protocoles qui sont marqués comme les plus intéressants à lancer, en suivant le système de priorité. Il propose aussi un système de 'flag' pour gagner du temps dans la création des protocoles: il s'agit de petites variables accessibles entre les protocoles, sans pour autant les rendre globales. On peux par exemple imaginer un 'flag' *isCubeLoaded* pour savoir si un cube a déja été chargé.
 #### Constructeurs:
 - **IA(Protocol \*protocols[], short unsigned int protocolCount)** : Crée une IA en lui fournissant un pointeur vers sa future liste de protocol, et sa taille.
 - **IA()** : Crée une IA avec les paramètres par défaut (nombre max de protocole stocké dans la macro MAX_PROTOCOL_NUMBER)
@@ -33,3 +33,8 @@ Un gestionnaire de protocole. À partir du moment ou il est lancé, il démarre 
 - **void reset()** : Reset les flags, et arrête l'ia. Elle recommencera au début si elle est relancée.<br>
 - **boolean isRunning()** : A pour valeur ``true`` si le thread de l'IA est en train de tourner. Sinon, a pour valeur ``false``.
 - **boolean hasRan()** : A pour valeur ``true`` si l'IA est à son état initial. Sinon, a pour valeur ``false``.
+## À faire:
+- [ ] Refactor l'ancien code
+- [ ] Modifier le code pour qu'il puisse tourner en standalone sur son propre thread.
+- [ ] Créer un utilitaire pour gérer les flux Serial. Cet utilitaire doit pouvoir être paramétré de manière à ce qu'il puisse exécuter automatiquement une fonction donnée si une certaine commande est reçu, puis de renvoyer une réponse via ce même port Serial. À l'inverse il doit aussi permettre l'envoi de commandes.
+- [ ] Intégrer l'utilitaire Serial dans l'IA. On doit pouvoir donner un nom à chaque sortie Serial.
