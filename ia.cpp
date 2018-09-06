@@ -1,15 +1,14 @@
 #include "ia.hpp"
-#include <Arduino.h>
 
 IA::IA():
   protocols_{},
   protocolCount_{},
-  maxFlagIndex{0} {}
+  maxFlagIndex_{0} {}
 
 IA::IA(Protocol *protocols[], unsigned short int protocolCount):
   protocols_{},
   protocolCount_{protocolCount},
-  maxFlagIndex{0} {
+  maxFlagIndex_{0} {
   for (unsigned short int i = 0; i < protocolCount; ++i) {
     protocols_[i] = protocols[i];
   }
@@ -34,18 +33,18 @@ void IA::autoselectProtocol() {
 
 }
 
-void IA::setFlag(String flagName, unsigned char value) {
-  for (unsigned int i=0;i<=maxFlagIndex;i++) {
-    if (dictionnary[i].id == flagName) {
-      dictionnary[i].value = value;
+void IA::setFlag(string flagName, unsigned char value) {
+  for (unsigned int i=0;i<=maxFlagIndex_;i++) {
+    if (dictionnary_[i].id == flagName) {
+      dictionnary_[i].value = value;
       return;
     }
   }
-  dictionnary[++maxFlagIndex] = {flagName, value};
+  dictionnary_[++maxFlagIndex_] = {flagName, value};
 }
 
-short int IA::getFlag(String flagName) { //return an unsigned char, or -1 if not found
-  for (auto entry : dictionnary) {
+short int IA::getFlag(string flagName) { //return an unsigned char, or -1 if not found
+  for (auto entry : dictionnary_) {
     if (entry.id == flagName) {
       return entry.value;
     }
@@ -53,50 +52,62 @@ short int IA::getFlag(String flagName) { //return an unsigned char, or -1 if not
   return -1;
 }
 
-void start(){
-  if(hasRun){
-    return;
+bool IA::start(){
+  if(isStopping_){
+    return false;
   }
-  isRunning.store(true);
-  hasRun.store(true);
-  thread = new thread(this, this);
-  thread.detach();
-}
-
-void pause(){
-  if(!hasRun){
-    throw runtime_error("Vous tentez de mettre en pause un thread qui n'a jamais été lançé!");
+  if(!hasRun_){
+    hasRun_.store(true);
+    thread_ = new std::thread(&IA::run, this);
+    thread_->detach();
   }
-  isRunning.store(false);
+  isRunning_.store(true);
+  return true;
 }
 
-void unpause(){
-  if(!hasRun){
-    throw runtime_error("Vous tentez de sortir de pause un thread qui n'a jamais été lançé!");
+bool IA::pause(){
+  while(isStopping_){
+    return false;
   }
-  if()
+  if(!isRunning_){
+    return true; // Si il est déja en pause, on ne fait rien mais on return true
+  }
+  isRunning_.store(false);
+  return true;
 }
 
-void reset();
-
-const bool isRunning(){
-  return isRunning;
+bool IA::stop(){
+  if(isStopping_){
+    return false;
+  }
+  isStopping_.store(true);
+  isRunning_.store(false);
+  thread_->join();
+  return true;
 }
 
-const bool hasRun(){
-  return hasRun;
+bool IA::isRunning(){
+  return isRunning_;
 }
 
-void operator()(){ // fonction run
+bool IA::hasRun(){
+  return hasRun_;
+}
+
+void IA::run(){ // fonction run
   while(true){
-    while(!isRunning){
+    while(!isRunning_ &!isStopping_){
       std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
+    if(isStopping_){
+      return;
+    }
+    /*
     if (!mb->isBusy() && !claw->isBusy()) {
       if (selectedProtocolId_==-1||protocols_[selectedProtocolId_]->isCompleted()) {
         autoselectProtocol();
       }
       if(selectedProtocolId_!=-1)protocols_[selectedProtocolId_]->update(this);
-    }
+    }*/
   }
 }

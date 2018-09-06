@@ -16,7 +16,7 @@ class Protocol {
     virtual void doNextMove(IA *ia) = 0; //execute the next action of this protocol
     virtual void reset() = 0; // reset this protocol
     virtual bool isCompleted() = 0; //wether the last action of this protocol have already been executed or not
-    virtual unsigned short int getPriority(IA *ia);
+    virtual unsigned short int getPriority(IA *ia) = 0;
   private:
     enum CommandType {forward, rotate, moveTo, load, unload, stack, buldozer, recalibrateMovingBackward};
     typedef struct {
