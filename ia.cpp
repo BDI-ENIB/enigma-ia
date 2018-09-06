@@ -53,8 +53,50 @@ short int IA::getFlag(String flagName) { //return an unsigned char, or -1 if not
   return -1;
 }
 
-void start();
-void pause();
+void start(){
+  if(hasRun){
+    return;
+  }
+  isRunning.store(true);
+  hasRun.store(true);
+  thread = new thread(this, this);
+  thread.detach();
+}
+
+void pause(){
+  if(!hasRun){
+    throw runtime_error("Vous tentez de mettre en pause un thread qui n'a jamais été lançé!");
+  }
+  isRunning.store(false);
+}
+
+void unpause(){
+  if(!hasRun){
+    throw runtime_error("Vous tentez de sortir de pause un thread qui n'a jamais été lançé!");
+  }
+  if()
+}
+
 void reset();
-bool isRunning();
-bool hasRun();
+
+const bool isRunning(){
+  return isRunning;
+}
+
+const bool hasRun(){
+  return hasRun;
+}
+
+void operator()(){ // fonction run
+  while(true){
+    while(!isRunning){
+      std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+    if (!mb->isBusy() && !claw->isBusy()) {
+      if (selectedProtocolId_==-1||protocols_[selectedProtocolId_]->isCompleted()) {
+        autoselectProtocol();
+      }
+      if(selectedProtocolId_!=-1)protocols_[selectedProtocolId_]->update(this);
+    }
+  }
+}

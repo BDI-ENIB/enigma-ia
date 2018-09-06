@@ -7,13 +7,18 @@
 #include "src/summerbot-bee/Bee.h"
 #include "protocol.hpp"
 
+#include <chrono>
+#include <thread>
+#include <atomic>
+#include <stdexcept>
+
 #define MAX_FLAG_NUMBER 20
 #define MAX_PROTOCOL_NUMBER 15
 
 class IA {
   private:
-    std::thread thread;
-    void operator()(); //TODO finir ici
+    std::thread *thread;
+    void operator()();
     Protocol *protocols_[MAX_PROTOCOL_NUMBER];
     unsigned short int protocolCount_;
     short int selectedProtocolId_=-1;
@@ -24,7 +29,9 @@ class IA {
     } DictionnaryEntry;
     DictionnaryEntry dictionnary[MAX_FLAG_NUMBER];
     unsigned char maxFlagIndex;
-    bool active = false;
+    std::atomic_bool isRunning = false;
+    std::atomic_bool hasRun = false;
+    std::atomic_bool isReseting = false;
 
   public:
 
